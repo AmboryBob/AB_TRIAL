@@ -10,4 +10,4 @@ group by grouping sets
 (FilmDirectorID, year(FilmReleaseDate)),
 (year(FilmReleaseDate))
 )
-order by FilmDirectorID
+order by FilmDirectorID VT VT VT VT VT VT VT
