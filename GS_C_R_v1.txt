@@ -1,0 +1,10 @@
+select count(filmname) as filmcount, sum(cast(FilmBoxOfficeDollars as bigint)) as Box, avg(FilmRunTimeMinutes) as Avruntime,year(FilmReleaseDate) as filmyear, FilmDirectorID
+
+from tblfilm
+--where FilmDirectorID < 6
+group by grouping sets
+(
+(FilmDirectorID, year(FilmReleaseDate)),
+(year(FilmReleaseDate))
+)
+order by FilmDirectorID

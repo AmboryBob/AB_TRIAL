@@ -1,0 +1,36 @@
+SELECT 
+F.[FilmID]
+      ,F.[FilmName]
+      ,F.[FilmReleaseDate]
+      ,F.[FilmDirectorID]
+	  ,D.DirectorName
+   
+    
+      ,F.[FilmRunTimeMinutes]
+  
+      ,COALESCE(F.[FilmBudgetDollars],0) AS FilmBudget
+      ,F.[FilmBoxOfficeDollars]
+	, CASE 
+		WHEN F.filmboxofficedollars < 1000000 THEN 'LOW'
+		WHEN F.filmboxofficedollars< 10000000 THEN 'MID'
+		WHEN F.filmboxofficedollars < 100000000 THEN 'HIGH'
+	ELSE 'MEGA'
+	END AS BOXTYPE
+  FROM [Movies].[dbo].[tblFilm] as F LEFT OUTER JOIN tblDirector as D ON D.DirectorID = F.FilmDirectorID
+  ORDER BY F.FilmName
+  OFFSET 10 ROWS FETCH NEXT 25 ROWS ONLY
+
+
+SELECT
+	f.FilmName as film
+	,cast(f.FilmBoxOfficeDollars as bigint) as BoxOffice
+	,cast(f.FilmReleaseDate as date) as ReleaseDate
+	--,format(f.FilmReleaseDate,'dd-mmm-yyyy') as ReleaseDate
+	,year(f.FilmReleaseDate) as FilmYear
+	,f.FilmRunTimeMinutes as RunTime
+	,coalesce(g.GenreName,'Not Specified') as Genre
+	,d.DirectorName as Director
+FROM
+tblFilm as f left outer join tblDirector as d on d.DirectorID = f.FilmDirectorID left outer join tblGenre as g on g.GenreId = f.FilmGenreID
+order by BoxOffice desc
+offset 1 rows fetch next 1 rows only
