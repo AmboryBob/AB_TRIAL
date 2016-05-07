@@ -1,0 +1,13 @@
+select 
+	d.DirectorName, d.DirectorID, a.*
+from
+tblDirector as d
+cross apply
+(select f.FilmName,f.FilmBoxOfficeDollars,f.FilmRunTimeMinutes,f.FilmDirectorID
+		,rank() over(order by f.FilmBoxOfficedollars desc) as BoxOfficeRank
+		from
+		tblfilm as f
+		where f.filmDirectorID = d.DirectorID 
+) as a
+where boxofficerank in (1,2,3)
+order by DirectorID
